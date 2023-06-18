@@ -1,0 +1,11 @@
+<h1>Share Song</h1>
+<p>Share the song "{{ playlist.song }}" with another user:</p>
+<form method="POST">
+    {% csrf_token %}
+    <input type="email" name="receiver_email" placeholder="Enter receiver's email">
+    <button type="submit">Share</button>
+</form>
+
+<p>
+  <a href="{% url 'private_playlist' %}">Back to Private Playlist</a>
+</p>

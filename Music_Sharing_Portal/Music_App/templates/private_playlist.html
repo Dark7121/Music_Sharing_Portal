@@ -1,0 +1,31 @@
+{% if songs %}
+  <h2>Private Playlist</h2>
+  <a href="{% url 'private_song_upload' %}">Upload a Private Song</a> 
+  
+  {% for song in songs %}
+    <div>
+      <h3>{{ song.name }} by {{ song.artist }}</h3>
+      <p>Uploaded by: {{ song.uploaded_by.username }}</p>
+      <img src="{{ song.cover_image.url }}" alt="{{ song.name }} Cover Image" width="500" height="250">
+      <audio controls>
+        <source src="{{ song.mp3_file.url }}" type="audio/mpeg">
+        Your browser does not support the audio element.
+      </audio>
+      <a href="{% url 'share_song' song.id %}">Share Privately</a> |
+      <form method="post" action="{% url 'delete_song' song.id %}" onsubmit="return confirm('Are you sure you want to delete this song?');">
+        {% csrf_token %}
+        <button type="submit">Delete</button>
+      </form>
+    </div>
+  {% empty %}
+    <p>No songs in the private playlist.</p>
+  {% endfor %}
+{% else %}
+  <h2>Private Playlist</h2>
+  <a href="{% url 'private_song_upload' %}">Upload a Private Song</a> 
+  <p>No songs in the private playlist.</p>
+{% endif %}
+
+<p>
+  <a href="{% url 'home' %}">Back to Home</a>
+</p>

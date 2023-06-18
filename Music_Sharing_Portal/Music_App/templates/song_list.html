@@ -1,0 +1,39 @@
+{% if user.is_authenticated %}
+  <p>Logged in as {{ user.username }}.</p>
+  <p><a href="{% url 'logout' %}">Log out</a></p>
+{% else %}
+  <p>You are not logged in.</p>
+  <p><a href="{% url 'login' %}">Log in</a></p>
+{% endif %}
+<h2>Song Search</h2>
+<form action="{% url 'search' %}" method="GET">
+  <input type="text" name="q" value="{{ query }}" placeholder="Search songs">
+  <button type="submit">Search</button>
+</form>
+{% if songs %}
+  
+  <h2>Public Song List</h2>
+  {% for song in songs %}
+    <div>
+      <h3>{{ song.name }} by {{ song.artist }}</h3>
+      <p>Uploaded by: {{ song.uploaded_by.username }}</p>
+      <img src="{{ song.cover_image.url }}" alt="{{ song.name }} Cover Image" width="500" height="250">
+      <audio controls>
+        <source src="{{ song.mp3_file.url }}" type="audio/mpeg">
+        Your browser does not support the audio element.
+      </audio> |
+      <form method="post" action="{% url 'delete_song' song.id %}" onsubmit="return confirm('Are you sure you want to delete this song?');">
+        {% csrf_token %}
+        <button type="submit">Delete</button>
+      </form>
+    </div>
+  {% empty %}
+    <p>No songs uploaded yet.</p>
+  {% endfor %}
+{% else %}
+  <p>No songs uploaded yet.</p>
+{% endif %}
+
+<p>
+  <a href="{% url 'home' %}">Back to Home</a>
+</p>

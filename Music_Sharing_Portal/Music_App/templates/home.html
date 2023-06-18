@@ -1,0 +1,26 @@
+{% if user.is_authenticated %}
+  <h1>Welcome, {{ user.username }}</h1>
+  <a href="{% url 'logout' %}">Logout</a>
+  <!-- Display the playlist -->
+  <a href="{% url 'song_list' %}">Song List</a>
+{% else %}
+  <h1>Welcome to the Music Sharing Portal!</h1>
+  <a href="{% url 'signup' %}">Sign Up</a> | <a href="{% url 'login' %}">Login</a>
+{% endif %}
+
+
+<ul>
+    {% for song in songs %}
+        <li>
+            {{ song.name }} - {{ song.artist }}
+            {% if song.mp3_file %}
+                <a href="{% url 'download_song' song_id=song.id %}">Download</a>
+            {% endif %}
+    {% endfor %}
+</ul>
+<p>
+  <a href="{% url 'upload' %}">Upload Song</a> |
+  <a href="{% url 'private_playlist' %}">Private Playlist</a> |
+  <a href="{% url 'protected_playlist' %}">Protected Playlist</a> |
+
+</p>

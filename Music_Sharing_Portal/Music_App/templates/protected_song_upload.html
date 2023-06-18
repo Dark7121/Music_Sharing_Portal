@@ -1,0 +1,11 @@
+<h1>Private Song Upload</h1>
+<form method="post" enctype="multipart/form-data">
+  {% csrf_token %}
+  {{song_form.as_p}}
+  {{ protected_song_form.as_p }}
+  <button type="submit">Upload</button>
+</form>
+
+<p>
+  <a href="{% url 'private_playlist' %}">Back to Private Playlist</a>
+</p>
